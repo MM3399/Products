@@ -1,0 +1,17 @@
+.seprator{
+    height: 10px;
+}
+.spacing{
+    height: 70px;
+}
+button{
+    width: 150px;
+}
+.category{
+        position: absolute;
+        left: 80%;
+}
+.alignment{
+    position: absolute;
+    left: 10%;
+}

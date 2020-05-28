@@ -1,0 +1,88 @@
+<!-- Header -->
+
+<div class="jumbotron">
+    <div class="container">
+        <div class="row row-header">
+            <div class="col-12 col-sm-8">
+                <h1>Quark Studios Products</h1>
+                <p>We take great pride in serving our customers</p>
+            </div>
+            <div class="col col-sm align-self-center">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our Products Container -->
+<div class="container">
+    <div class="row">
+       <h2 class="ml-5">Our Products</h2> 
+    </div>
+</div>
+<!-- Category Box -->
+<div class="category">
+    <div class="row">
+      <label>Category &nbsp;&nbsp;</label>
+        <form>
+            <select name="categoryForFilter"  [(ngModel)]="categoryForFilter">
+                <option *ngFor="let oneOption of options" [ngValue]="oneOption.name">{{oneOption.name}}</option>
+            </select>
+        </form> 
+    </div>
+</div>
+
+<div class="spacing"></div>
+<!-- Products Info -->
+<div class="row">
+    <div class="col-6 col-sm-6 m-4 ">
+        <div class="card " *ngFor="let p of products ">
+            <h3 class="card-header bg-primary text-white" *ngIf="p.category==categoryForFilter || categoryForFilter=='All'"> {{p.name}}</h3>
+            <div class="card-block"*ngIf="p.category==categoryForFilter || categoryForFilter=='All'" >
+                <dl class="row">
+                    <dt class="col-6">Price</dt>
+                    <dd class="col-6">{{p.price}}</dd>
+                    <dt class="col-6">Description</dt>
+                    <dd class="col-6">{{p.description}}</dd>
+                </dl>
+            </div>
+            <button *ngIf="p.category==categoryForFilter || categoryForFilter=='All'" class="btn btn-danger align-self-center" (click)="removeProduct(p.id)">Remove</button>
+        </div>
+    </div>
+</div>
+<div class="spacing"></div>
+ 
+        <div class="row">
+           <h2 class="col-6 col-sm-6">Add Product</h2> 
+        </div>
+    <div class="row"></div>
+    <form>
+    <div class="row">
+        <label class="col-2 ml-5"> Product name</label> 
+        <input name="product" class="col-4" type="text" [(ngModel)]="name">
+    </div>
+    <div class="seprator"></div>
+    <div class="row">
+        <label class="col-2 ml-5">Price</label>
+        <input name="price" class="col-4" type="text" [(ngModel)]="price">
+    </div>
+    <div class="seprator"></div>
+    <div class="row">
+        <label class="col-2 ml-5">Description</label>
+        <input name="description" class="col-4" type="text" [(ngModel)]="description">
+    </div>
+    <div class="seprator"></div>
+    <div class="row">
+        <label class="col-2 ml-5">Category</label>
+        <select class="col-4" name="category"  [(ngModel)]="category">
+            <option *ngFor="let oneOption of option" [ngValue]="oneOption.name">{{oneOption.name}}</option>
+        </select>
+    </div>
+    <div class="seprator"></div>
+    <div class="row align-self-center ml-5">
+        <button  class="btn btn-primary ml-10" type="submit" (click)="addProduct()">Add</button>
+        
+    </div>
+</form>
+
+
+ 
+
