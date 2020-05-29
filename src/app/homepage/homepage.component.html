@@ -34,7 +34,7 @@
 <!-- Products Info -->
 <div class="row">
     <div class="col-6 col-sm-6 m-5 ">
-        <div class="card " *ngFor="let p of products ">
+        <div class="card " *ngFor="let p of product ">
             <h3 class="card-header bg-primary text-white" *ngIf="p.category==categoryForFilter || categoryForFilter=='All'"> {{p.name}}</h3>
             <div class="card-block"*ngIf="p.category==categoryForFilter || categoryForFilter=='All'" >
                 <dl class="row">
@@ -42,9 +42,11 @@
                     <dd class="col-6">{{p.price}}</dd>
                     <dt class="col-6">Description</dt>
                     <dd class="col-6">{{p.description}}</dd>
+                    <dd class="col-6"> <button *ngIf="p.category==categoryForFilter || categoryForFilter=='All'" class="btn btn-danger align-self-center" (click)="removeProduct(p)">Remove</button></dd>
+                    <dd class="col-6"> <button *ngIf="p.category==categoryForFilter || categoryForFilter=='All'" class="btn btn-success align-self-center" (click)="changeButton(p)">Edit</button></dd>
                 </dl>
             </div>
-            <button *ngIf="p.category==categoryForFilter || categoryForFilter=='All'" class="btn btn-danger align-self-center" (click)="removeProduct(p.id)">Remove</button>
+            
         </div>
     </div>
 </div>
@@ -54,32 +56,34 @@
            <h2 class="col-6 col-sm-6 m-5">Add Product</h2> 
         </div>
     <div class="row"></div>
-    <form>
+    <form #form=ngForm>
     <div class="row">
         <label class="col-2 ml-5"> Product name</label> 
-        <input name="product" class="col-4" type="text" [(ngModel)]="name">
+        <input name="product" class="col-4" type="text" [(ngModel)]="name" required>
     </div>
     <div class="seprator"></div>
     <div class="row">
         <label class="col-2 ml-5">Price</label>
-        <input name="price" class="col-4" type="text" [(ngModel)]="price">
+        <input name="price" class="col-4" type="text" [(ngModel)]="price" required>
     </div>
     <div class="seprator"></div>
     <div class="row">
         <label class="col-2 ml-5">Description</label>
-        <input name="description" class="col-4" type="text" [(ngModel)]="description">
+        <input name="description" class="col-4" type="text" [(ngModel)]="description" required>
     </div>
     <div class="seprator"></div>
     <div class="row">
         <label class="col-2 ml-5">Category</label>
-        <select class="col-4" name="category"  [(ngModel)]="category">
+        <select class="col-4" name="category"  [(ngModel)]="category" required>
             <option *ngFor="let oneOption of option" [ngValue]="oneOption.name">{{oneOption.name}}</option>
         </select>
     </div>
     <div class="seprator"></div>
-    <div class="row align-self-center ml-5">
-        <button  class="btn btn-primary ml-10" type="submit" (click)="addProduct()">Add</button>
-        
+    <div class="row align-self-center ml-5"  *ngIf= "button==true" >
+        <button  class="btn btn-primary ml-10" [disabled]="!this.form.valid" type="submit" (click)="addProduct()">Add</button>
+    </div>
+    <div class="row align-self-center ml-5" *ngIf= "button==false" >
+        <button  class="btn btn-primary ml-10" [disabled]="!this.form.valid" type="submit" (click)="editProduct()">Edit</button>
     </div>
 </form>
 

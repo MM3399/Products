@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {ServicesService } from '../services.service'
+import { product } from '../shared/product';
+import { productClass } from '../shared/productclass';
 
 @Component({
   selector: 'app-homepage',
@@ -6,11 +9,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-
-  constructor() { }
-
+  button: boolean = true;
+  constructor(private service:ServicesService ) { }
+  product: product = new  productClass('','','','','');
   ngOnInit(): void {
-    JSON.stringify(this.products);
+    this.service.getProducts().subscribe((data)=>{
+      this.product=data as productClass;
+      this.refreshProducts();
+    })
   }
   options = [
     { id: 0, name: "Electronics" },
@@ -22,36 +28,54 @@ export class HomepageComponent implements OnInit {
     { id: 1, name: "Household" }
   ];
   temp;
+  id: string;
   categoryForFilter="All";
   name: string;
   price: string;
   description:string;
   category: string = 'Electronics';
-  id=0;
-  products = [{id: 0,name: 'Laptop' , price: '40000' , description: 'Best in its range', category: 'Electronics',}];
+
 addProduct(){
-  if(this.id!=0)
-    this.id=this.id+1;
-  this.temp={id:this.id,name: this.name,price: this.price, description: this.description, category: this.category};
-  this.products.push(this.temp);
-  console.log(this.products);
+  this.temp={name: this.name,price: this.price, description: this.description, category: this.category};
+
   this.name= '';
   this.category='';
   this.description='';
   this.price='';
-  JSON.stringify(this.products);
+  this.service.sendProducts(this.temp).subscribe(data => {console.log(data)
+  alert(data)});
+  this.refreshProducts();
 }
-removeProduct(id){
-  console.log("Removal ID",id);
-  for(let i=id+1;i<this.id+1;i++){
-    this.products[i].id--;
-    console.log("This product",i ,"id is",this.products[i].id)
+removeProduct(producttobedeleted){
+      console.log(producttobedeleted);
+      this.service.deleteProducts(producttobedeleted).subscribe(data=>{console.log(data)
+      alert(data)})
+      this.refreshProducts();
   }
-  this.products.splice(id,1);
-  if(this.id>0){
-      this.id--;
-      console.log(this.id);
+  refreshProducts(){
+    this.service.getProducts().subscribe((data)=>{
+      this.product=data as productClass;
+    })
   }
+  editProduct(){
+    this.button=true;
+    this.temp={id:this.id, name: this.name,price: this.price, description: this.description, category: this.category};
+    console.log(this.temp); 
+    this.name= '';
+    this.category='';
+    this.description='';
+    this.price='';
+    this.service.sendProducts(this.temp).subscribe(data => {console.log(data)
+      alert(data)});
+    this.refreshProducts();
+  }
+  changeButton(p){
+    this.button=false;
+    this.name=p.name;
+    this.price=p.price;
+    this.category=p.category;
+    this.description=p.description;
+    this.id=p._id;
+  }
+}
 
-}
-}
